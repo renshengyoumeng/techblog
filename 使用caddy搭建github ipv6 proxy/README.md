@@ -29,7 +29,7 @@ Those wanting to use the proxy more permanently and/or talk directly to GitHub, 
 如果你对搭建感兴趣，可以阅读剩余部分
 
 <!--more-->
-
+--------------
 
 最后那条是我用自己的香港主机做的中转，流量有限。
 中转使用caddy搭建
@@ -44,15 +44,13 @@ danwin 使用 nginx stream 方案，这个方案基于L4（传输层）
 访问 [https://caddyserver.com/download](https://caddyserver.com/download) 地址，按照下图进行选择。模块搜索 l4，按图选择，点击 download 下载
 
  
-![下载图示](https://img2024.cnblogs.com/blog/1761016/202511/1761016-20251126124249954-511574715.png)
-
-
+![下载图示](./下载图示.png)
 
 
 
 ### 2. 将下载的文件传到 vps 上
 
-[caddy_linux_amd64_custom.zip](https://www.liyunhe.wang/usr/uploads/2025/11/3890451627.zip)
+[caddy_linux_amd64_custom.zip](./caddy_linux_amd64_custom.zip)
 
 ### 3. 安装
 
@@ -102,6 +100,9 @@ If using a config file, be sure it is readable by the caddy user you just create
 Next, choose a systemd unit file based on your use case.
 
 我使用 ubuntu 24.04，因此采用[这个：](https://github.com/caddyserver/dist/blob/master/init/caddy.service)
+
+The usual place to save the service file is: `/etc/systemd/system/caddy.service`
+
 由于官方提供的demo在运行时会报权限不足的错误，因此将最后一句话做了修改。
 下面是修改后的结果：
 
@@ -147,7 +148,6 @@ WantedBy=multi-user.target
 
 Double-check the ExecStart and ExecReload directives. Make sure the binary's location and command line arguments are correct for your installation! For example: if using a config file, change your `--config` path if it is different from the defaults.
 
-The usual place to save the service file is: `/etc/systemd/system/caddy.service`
 
 After saving your service file, you can start the service for the first time with the usual systemctl dance:
 
@@ -185,18 +185,18 @@ mkdir /etc/caddy
 nano /etc/caddy/Caddyfile
 ```
 
-放在 /etc/caddy/Caddyfile
+将下面的内容写入到 /etc/caddy/Caddyfile
 
 ```txt
-{
-    layer4 {
-        [2602:f92a:220:249::109]:443 {
-            route {
-                proxy {
-                    upstream raw.githubusercontent.com:443
-                }
+
+layer4 {
+    [2602:f92a:220:249::109]:443 {
+        route {
+            proxy {
+                upstream raw.githubusercontent.com:443
             }
         }
     }
 }
+
 ```
