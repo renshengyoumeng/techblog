@@ -8,7 +8,7 @@ category: tryit
 
 ## 内容参考：
 - [https://www.bandwagonhost.net/12445.html](https://www.bandwagonhost.net/12445.html) 
-- [https://blog.example_user.moe/posts/selfhost-snac-activitypub-on-debian-with-nginx/](https://blog.example_user.moe/posts/selfhost-snac-activitypub-on-debian-with-nginx/)
+- [https://blog.dejavu.moe/posts/selfhost-snac-activitypub-on-debian-with-nginx/](https://blog.dejavu.moe/posts/selfhost-snac-activitypub-on-debian-with-nginx/)
 
 
 <!--more-->
