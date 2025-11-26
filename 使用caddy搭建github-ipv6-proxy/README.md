@@ -31,9 +31,6 @@ Those wanting to use the proxy more permanently and/or talk directly to GitHub, 
 <!--more-->
 --------------
 
-最后那条是我用自己的香港主机做的中转，流量有限。
-中转使用caddy搭建
-
 ## 如何搭建？
 
 ### 1. 需要安装 [caddy-l4](https://github.com/mholt/caddy-l4) 第三方模块
