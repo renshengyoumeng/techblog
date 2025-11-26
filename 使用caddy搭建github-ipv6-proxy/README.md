@@ -50,7 +50,7 @@ danwin 使用 nginx stream 方案，这个方案基于L4（传输层）
 
 ### 2. 将下载的文件传到 vps 上
 
-[caddy_linux_amd64_custom.zip](https://raw.githubusercontent.com/renshengyoumeng/techblog/main/使用caddy搭建github ipv6 proxy/caddy_linux_amd64_custom.zip)
+[caddy_linux_amd64_custom.zip](https://raw.githubusercontent.com/renshengyoumeng/techblog/main/使用caddy搭建github-ipv6-proxy/caddy_linux_amd64_custom.zip)
 
 ### 3. 安装
 
