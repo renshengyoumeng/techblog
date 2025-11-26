@@ -1,7 +1,7 @@
 ---
 title: 如何安装snac
 description: 介绍如何安装snac
-tags: snac, how-to-install
+tags: snac, how-to-install, fediverse
 category: tryit
 ---
 
