@@ -7,9 +7,14 @@ category: tryit
 
 搭建方法和代理资源支持参考：https://danwin1210.de/github-ipv6-proxy.php
 
-Recently I had to clone a git repository on GitHub via an IPv6 only server that I rented at my favourite hosting provider Hetzner. Unfortunately I realized that GitHub still does not support IPv6.
+> 我开始建立起一个WireGuard VPN， 为此我使用了我的一个双核服务器另外一个可以让用于Tor匿名下载
+>
+> 当然我不是唯一一个有着IPv6问题的用户， 所以我决心将它作为一个公共代理服务器这样所有人都可以使用它进行GitHub仓库下载这个服务仅针对IPv6用户IPv4用户可以直接克隆GitHub仓库所以没有必要浪费服务器资源
+>
+> 注意，我的https代理正在为我的域名提供SSL验证服务。 这意味着我会解密并重新加密你的通信(我有能力直接监听你的通信，但我不会这么干). 你 有必要获得有关SSL验证的警告 Github会在接受警告之后重定向到默认端口以下是一个更能保护隐私的方法
 
-Those wanting to use the proxy more permanently and/or talk directly to GitHub, without me re-encrypting your traffic, should add the following to `/etc/hosts`:
+那些希望永久使用我的服务的人 在我没有重新加密你的通信的情况下，应该添加这些内容到 `/etc/hosts` :
+
 
 ```txt
 2a01:4f8:c010:d56::2 github.com
@@ -53,34 +58,33 @@ danwin 使用 nginx stream 方案，这个方案基于L4（传输层）
 
 安装文档均可在[官方](https://caddyserver.com/docs/install#static-binaries)找到。此处同样列出一份
 
+一些安装方式会自动把 Caddy 设置为服务。如果你选择的方式没有这样做，你可以按以下步骤操作：
 
-Some installation methods automatically set up Caddy to run as a service. If you chose a method that did not, you may follow these instructions to do so:
+要求：
 
-Requirements:
+- 你下载或从源代码构建的 caddy 二进制文件
+- systemctl 版本必须为 232 或更新
+- sudo 权限
 
-    caddy binary that you downloaded or built from source
-    systemctl --version 232 or newer
-    sudo privileges
-
-Move the caddy binary into your $PATH, for example:
+将 caddy 二进制文件移动到你的 `$PATH`，例如：
 
 ```bash
 sudo mv caddy /usr/bin/
 ```
 
-Test that it worked:
+测试是否成功：
 
 ```bash
 caddy version
 ```
 
-Create a group named caddy:
+创建名为 caddy 的用户组：
 
 ```bash
 sudo groupadd --system caddy
 ```
 
-Create a user named caddy with a writeable home directory:
+创建名为 caddy 的用户，并带有可写 home 目录：
 
 ```bash
 sudo useradd --system \
@@ -92,13 +96,13 @@ sudo useradd --system \
     caddy
 ```
 
-If using a config file, be sure it is readable by the caddy user you just created.
+如果使用配置文件，请确保刚创建的 caddy 用户能读取该文件。
 
-Next, choose a systemd unit file based on your use case.
+接下来，根据你的场景选择合适的 systemd 单元文件。
 
 我使用 ubuntu 24.04，因此采用[这个：](https://github.com/caddyserver/dist/blob/master/init/caddy.service)
 
-The usual place to save the service file is: `/etc/systemd/system/caddy.service`
+通常 service 文件放在：`/etc/systemd/system/caddy.service`
 
 由于官方提供的demo在运行时会报权限不足的错误，因此将最后一句话做了修改。
 下面是修改后的结果：
@@ -143,25 +147,24 @@ CapabilityBoundingSet=CAP_NET_BIND_SERVICE
 WantedBy=multi-user.target
 ```
 
-Double-check the ExecStart and ExecReload directives. Make sure the binary's location and command line arguments are correct for your installation! For example: if using a config file, change your `--config` path if it is different from the defaults.
+请再次检查 ExecStart 与 ExecReload 配置，确保路径与参数正确。
 
-
-After saving your service file, you can start the service for the first time with the usual systemctl dance:
+保存文件后，启动服务：
 
 ```bash
 sudo systemctl daemon-reload
 sudo systemctl enable --now caddy
 ``` 
 
-Verify that it is running:
+检查是否正在运行：
 
 ```bash
 systemctl status caddy
 ``` 
 
-Now you're ready to use the service!
+现在你已经可以使用服务了！
 
-也许这个时候可能会遇到证书相关的权限错误。部分错误文本：
+可能会遇到证书相关权限问题，例如：
 
 ```txt
 logger":"pki.ca.local","msg":"failed to install root certificate","error":"failed to execute sudo
